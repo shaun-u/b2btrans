@@ -6,9 +6,11 @@ from py_sems_lib import *
 
 class PySemsScript(PySemsB2ABDialog):
 # PySemsB2ABDialog includes access to the audio stream.
+  "attempt to control lifetime of callee session"
 
   def __init__(self):
     debug("b2btrans--> __init__ ")
+    self.calleeSession = None
     PySemsB2ABDialog.__init__(self)
 
   def onSessionStart(self,req):
@@ -38,6 +40,16 @@ class PySemsScript(PySemsB2ABDialog):
       debug("connectCallee 2 start")
       self.connectCallee("<sip:11@192.168.1.111>","sip:11@192.168.1.111","<sip:shaun@192.168.1.135>","sip:shaun@192.168.1.135")
       debug("connectCallee 2 stop")
+    elif evt == 3:
+      debug("disconnecting callee session 3 start")
+      if not self.calleeSession == None:
+	self.calleeSession.disconnectSession()
+      debug("disconnecting callee session 3 stop")
+    elif evt == 4:
+      debug("reconnecting callee session 4 start")
+      if not self.calleeSession == None:
+	self.calleeSession.connectSession()
+      debug("reconnecting callee session 4 stop")
       
     PySemsB2ABDialog.onDtmf(self,evt,duration)
 
@@ -48,7 +60,8 @@ class PySemsScript(PySemsB2ABDialog):
 
   def createCalleeSession(self):
     debug("b2btrans--> createCalleeSession")
-    return PySemsB2ABDialog.createCalleeSession(self)
+    self.calleeSession = PySemsB2ABDialog.createCalleeSession(self)
+    return self.calleeSession
 
   def onB2ABEvent(self,evt):
     debug("b2btrans--> onB2ABEvent")
