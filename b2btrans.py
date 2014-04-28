@@ -32,8 +32,13 @@ class PySemsScript(PySemsB2ABDialog):
     debug("p1=%d;p2=%d",(evt,duration))
     if evt == 1:
       debug("connectCallee 1 start")
-      self.connectCallee("<sip:shaun@10.0.2.15>","sip:shaun@10.0.2.15","<sip:me@mars.com>","sip:me@mars.com")
+      self.connectCallee("<sip:iphone@192.168.1.108>","sip:iphone@192.168.1.108","<sip:shaun@192.168.1.135>","sip:shaun@192.168.1.135")
       debug("connectCallee 1 stop")
+    elif evt == 2:
+      debug("connectCallee 2 start")
+      self.connectCallee("<sip:11@192.168.1.111>","sip:11@192.168.1.111","<sip:shaun@192.168.1.135>","sip:shaun@192.168.1.135")
+      debug("connectCallee 2 stop")
+      
     PySemsB2ABDialog.onDtmf(self,evt,duration)
 
   def process(self,evt):
@@ -55,4 +60,4 @@ class PySemsScript(PySemsB2ABDialog):
     debug("evt=%s",str(evt))
     PySemsB2ABDialog.relayEvent(self,evt)
 
-
+# In PySemsB2ABDialog, there is a connectSession() and disconnectSession(). If I keep hold of the sessions, maybe they can be swapped?
